@@ -14,3 +14,6 @@ class Message(models.Model):
   receiver = models.ForeignKey(
     settings.AUTH_USER_MODEL,
     on_delete=models.CASCADE, related_name='receiver_message_set')
+  
+class Chat(models.Model):
+  created_at = models.DateField(default=date.today)
