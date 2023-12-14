@@ -1,33 +1,43 @@
 {% extends "base.html" %}
 {% block content %}
 
-<main class="login-content">
+<section class="login-content">
+
   <h1>Register</h1>
 
-  {% if noPwMatch %}
-
-  <p>The passwords you entered do not match!</p>
-
-  {% endif %}
-
-  <form class="login-form" action="/register/" method="POST">
+  <form class="login-form" action="/register/" method="POST" return="false">
     {% csrf_token %}
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-      <input name="username" class="mdl-textfield__input" id="username" type="text">
+      <input name="firstname" class="mdl-textfield__input" id="firstname" type="text" required>
+      <label class="mdl-textfield__label" for="firstname">First name</label>
+    </div>
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+      <input name="lastname" class="mdl-textfield__input" id="lastname" type="text" required>
+      <label class="mdl-textfield__label" for="lastname">Last name</label>
+    </div>
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+      <input name="username" class="mdl-textfield__input" id="username" type="text" required>
       <label class="mdl-textfield__label" for="username">Username</label>
     </div>
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-      <input name="password" class="mdl-textfield__input" id="password" type="password">
+      <input name="password" class="mdl-textfield__input" id="password" type="password" required>
       <label class="mdl-textfield__label" for="password">Password</label>
     </div>
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-      <input name="passwordRepeat" class="mdl-textfield__input" id="passwordRepeat" type="password">
+      <input name="passwordRepeat" class="mdl-textfield__input" id="passwordRepeat" type="password" required>
       <label class="mdl-textfield__label" for="passwordRepeat">Repeat password</label>
     </div>
     <div class="login-button-container">
       <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Register</button>
     </div>
   </form>
-</main>
+
+  {% if noPwMatch %}
+
+  <p class="alert-text">The passwords you entered do not match!</p>
+
+  {% endif %}
+
+</section>
 
 {% endblock %}

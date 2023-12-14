@@ -34,6 +34,7 @@ def login_view(request):
       return render(request, 'auth/login.html', {'wrongPassword': True})
   return render(request, 'auth/login.html')
 
+
 def register_view(request):
   if request.method == 'POST':
       username = request.POST.get('username')

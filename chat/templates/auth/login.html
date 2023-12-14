@@ -1,14 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
 
-<main class="login-content">
+<section class="login-content">
+
   <h1>Login</h1>
-
-  {% if wrongPassword %}
-
-  <p>Wrong Username or Password</p>
-
-  {% endif %}
 
   <form class="login-form" action="/login/" method="POST">
     {% csrf_token %}
@@ -24,6 +19,15 @@
       <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Login</button>
     </div>
   </form>
-</main>
+
+  <p>Not a user? Register <a class="register-link" href="/register/">Now</a></p>
+
+  {% if wrongPassword %}
+
+  <p class="alert-text">Wrong Username or Password</p>
+
+  {% endif %}
+
+</section>
 
 {% endblock %}
