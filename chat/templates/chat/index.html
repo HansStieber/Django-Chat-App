@@ -12,6 +12,12 @@
   }
 </style>
 
+{% for message in messages %}
+<div>
+  [{{ message.created_at }}] {{ message.author.first_name }}: {{ message.text }}
+</div>
+{% endfor %}
+
 <form action="/chat/" method="post">
   {% csrf_token %}
   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
