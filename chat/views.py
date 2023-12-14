@@ -1,5 +1,4 @@
-from django.http import HttpResponseRedirect
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect
 from .models import Chat, Message
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -17,6 +16,7 @@ def index(request):
       author=request.user,
       receiver=request.user, 
       )
+    return redirect('/chat/')
   chatMessages = Message.objects.filter(chat__id=chatId)
   return render(request, 'chat/index.html', {'messages': chatMessages})
 
@@ -29,7 +29,7 @@ def login_view(request):
       )
     if user:
       login(request, user)
-      return HttpResponseRedirect('/chat/')
+      return redirect('/chat/')
     else:
       return render(request, 'auth/login.html', {'wrongPassword': True})
   return render(request, 'auth/login.html')
@@ -37,12 +37,14 @@ def login_view(request):
 
 def register_view(request):
   if request.method == 'POST':
+      first_name = request.POST.get('firstname')
+      last_name = request.POST.get('lastname')
       username = request.POST.get('username')
       password = request.POST.get('password')
       passwordRepeat = request.POST.get('passwordRepeat')
       if password == passwordRepeat:
-        User.objects.create_user(username=username, password=password)
-        return HttpResponseRedirect('/login/')
+        User.objects.create_user(username=username, password=password, first_name=first_name, last_name=last_name)
+        return redirect('/login/')
       else:
         return render(request, 'register/register.html', {'noPwMatch': True})
   return render(request, 'register/register.html')
@@ -50,4 +52,4 @@ def register_view(request):
 
 def user_logout(request):
     logout(request)
-    return HttpResponseRedirect('/login/')
+    return redirect('/login/')
