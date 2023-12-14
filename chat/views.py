@@ -2,8 +2,10 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from .models import Chat, Message
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
+@login_required(login_url='/login/')
 def index(request):
   chatId = 4
   myChat = get_object_or_404(Chat, id=chatId)
