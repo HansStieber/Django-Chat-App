@@ -24,6 +24,7 @@
     align-items: flex-start;
     flex: 1;
     justify-content: flex-end;
+    margin-bottom: 20px;
   }
 
   .message-container {
@@ -32,7 +33,8 @@
   }
 
   .message-container:hover {
-    background-color: rgb(255,64,129, 0.2);;
+    background-color: rgb(255, 64, 129, 0.2);
+    ;
   }
 
   .author {
@@ -50,12 +52,14 @@
   }
 </style>
 
+{% if reques.user.is_authenticated %}
+
 <div class="chat-container">
   <div class="messages-container">
     {% for message in messages %}
     <div class="message-container">
       <div>
-        <span class="author">{{ message.author.first_name }}</span><span class="creation-time">{{ message.created_at}}</span>
+        <span class="author">{{ message.author.first_name }}</span><span class="creation-time">{{ message.created_at }}</span>
       </div>
       <div class="message-text">
         {{ message.text }}
@@ -75,3 +79,11 @@
     </button>
   </form>
 </div>
+
+{% else %}
+
+<h1>Nicht eingeloggt!</h1>
+<p>Du bist nicht eingeloggt. Bitte logge dich ein <br>
+Klicke <a href="/login/">Hier</a></p>
+
+{% endif %}
