@@ -2,15 +2,15 @@
 {% block content %}
 
 <main class="login-content">
-  <h1>Login</h1>
+  <h1>Register</h1>
 
-  {% if wrongPassword %}
+  {% if noPwMatch %}
 
-  <p>Wrong Username or Password</p>
+  <p>The passwords you entered do not match!</p>
 
   {% endif %}
 
-  <form class="login-form" action="/login/" method="POST">
+  <form class="login-form" action="/register/" method="POST">
     {% csrf_token %}
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
       <input name="username" class="mdl-textfield__input" id="username" type="text">
@@ -20,8 +20,12 @@
       <input name="password" class="mdl-textfield__input" id="password" type="password">
       <label class="mdl-textfield__label" for="password">Password</label>
     </div>
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+      <input name="passwordRepeat" class="mdl-textfield__input" id="passwordRepeat" type="password">
+      <label class="mdl-textfield__label" for="passwordRepeat">Repeat password</label>
+    </div>
     <div class="login-button-container">
-      <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Login</button>
+      <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Register</button>
     </div>
   </form>
 </main>
