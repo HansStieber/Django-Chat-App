@@ -10,21 +10,68 @@
     justify-content: center;
     align-items: center;
   }
+
+  .chat-container {
+    height: 800px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .messages-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex: 1;
+    justify-content: flex-end;
+  }
+
+  .message-container {
+    margin-top: 10px;
+    padding: 5px;
+  }
+
+  .message-container:hover {
+    background-color: rgb(255,64,129, 0.2);;
+  }
+
+  .author {
+    font-size: 18px;
+    font-weight: bold;
+    margin-right: 10px;
+  }
+
+  .creation-time {
+    font-weight: 700;
+  }
+
+  .message-text {
+    width: 365px;
+  }
 </style>
 
-{% for message in messages %}
-<div>
-  [{{ message.created_at }}] {{ message.author.first_name }}: {{ message.text }}
-</div>
-{% endfor %}
-
-<form action="/chat/" method="post">
-  {% csrf_token %}
-  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-    <input name="textmessage" class="mdl-textfield__input" type="text" id="sample3">
-    <label class="mdl-textfield__label" for="sample3">Your message...</label>
+<div class="chat-container">
+  <div class="messages-container">
+    {% for message in messages %}
+    <div class="message-container">
+      <div>
+        <span class="author">{{ message.author.first_name }}</span><span class="creation-time">{{ message.created_at}}</span>
+      </div>
+      <div class="message-text">
+        {{ message.text }}
+      </div>
+    </div>
+    {% endfor %}
   </div>
-  <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-    send
-  </button>
-</form>
+
+  <form action="/chat/" method="post">
+    {% csrf_token %}
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+      <input name="textmessage" class="mdl-textfield__input" type="text" id="sample3">
+      <label class="mdl-textfield__label" for="sample3">Your message...</label>
+    </div>
+    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+      send
+    </button>
+  </form>
+</div>
