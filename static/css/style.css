@@ -48,6 +48,7 @@ form {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  overflow-y: scroll;
 }
 
 .messages-container {
@@ -81,4 +82,5 @@ form {
 
 .message-text {
   width: 365px;
+  word-wrap: break-word;
 }

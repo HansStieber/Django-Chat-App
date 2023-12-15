@@ -1,9 +1,74 @@
 {% extends "base.html" %}
 {% block content %}
 
+<script>
+
+  async function sendMessage() {
+    let fd = new FormData();
+    let token = '{{ csrf_token }}';
+    fd.append('textmessage', messageField.value);
+    fd.append('csrfmiddlewaretoken', token)
+
+    let formattedDate = getCurrentDateInRightFormat();
+
+    try {
+      messagesContainer.innerHTML += `
+      <div class="message-container" id="deleteMessage">
+        <div>
+          <span class="author">{{ request.user.first_name }}</span><span class="creation-time">${formattedDate}</span>
+        </div>
+        <div class="message-text alert-text">
+          ${messageField.value}
+        </div>
+      </div>
+      `;
+
+      let response = await fetch('/chat/', {
+        method: 'POST',
+        body: fd
+      });
+
+      let json = await response.json();
+      console.log('json is', json)
+
+      deleteMessage.remove();
+      messagesContainer.innerHTML += `
+      <div class="message-container">
+        <div>
+          <span class="author">{{ request.user.first_name }}</span><span class="creation-time">${formattedDate}</span>
+        </div>
+        <div class="message-text">
+          ${messageField.value}
+        </div>
+      </div>
+      `;
+
+      messageField.value = null;
+      console.log('success');
+    } catch (e) {
+      console.error('An error occured', e);
+    }
+  }
+
+  function getCurrentDateInRightFormat() {
+    const months = [
+      "Jan.", "Feb.", "Mar.", "Apr.", "May", "Jun.", "Jul.", "Aug.", "Sep.", "Oct.", "Nov.", "Dec."
+    ];
+
+    const currentDate = new Date();
+    const day = currentDate.getDate();
+    const month = months[currentDate.getMonth()];
+    const year = currentDate.getFullYear();
+
+    const formattedDate = `[${month} ${day}, ${year}]`;
+    return formattedDate;
+  }
+
+</script>
+
 <section class="chat-content">
   <div class="chat-container">
-    <div class="messages-container">
+    <div class="messages-container" id="messagesContainer">
       {% for message in messages %}
       <div class="message-container">
         <div>
@@ -15,18 +80,18 @@
       </div>
       {% endfor %}
     </div>
-
-    <form action="/chat/" method="post">
-      {% csrf_token %}
-      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-        <input name="textmessage" class="mdl-textfield__input" type="text" id="sample3">
-        <label class="mdl-textfield__label" for="sample3">Your message...</label>
-      </div>
-      <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-        send
-      </button>
-    </form>
   </div>
+
+  <form onsubmit="sendMessage(); return false;" method="post">
+    {% csrf_token %}
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+      <input name="textmessage" class="mdl-textfield__input" type="text" id="messageField">
+      <label class="mdl-textfield__label" for="messageField">Your message...</label>
+    </div>
+    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+      send
+    </button>
+  </form>
 </section>
 
 {% endblock %}
