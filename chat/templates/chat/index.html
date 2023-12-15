@@ -22,6 +22,8 @@
         </div>
       </div>
       `;
+      
+      messagesContainer.lastElementChild.scrollIntoView({ behavior: 'smooth' }); // Remove the parentheses
 
       let response = await fetch('/chat/', {
         method: 'POST',
@@ -43,11 +45,11 @@
       </div>
       `;
 
-      messageField.value = null;
-      console.log('success');
-    } catch (e) {
-      console.error('An error occured', e);
-    }
+  messageField.value = null;
+  console.log('success');
+} catch (e) {
+  console.error('An error occurred', e);
+}
   }
 
   function getCurrentDateInRightFormat() {
