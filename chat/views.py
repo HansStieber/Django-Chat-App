@@ -31,8 +31,8 @@ def login_view(request):
     next = '/chat/'
   if request.method == 'POST':
     user = authenticate(
-      username=request.POST.get('username'),
-      password=request.POST.get('password')
+      username=request.POST.get('usernameLogin'),
+      password=request.POST.get('passwordLogin')
       )
     if user:
       login(request, user)
@@ -46,8 +46,8 @@ def register_view(request):
   if request.method == 'POST':
       first_name = request.POST.get('firstname')
       last_name = request.POST.get('lastname')
-      username = request.POST.get('username')
-      password = request.POST.get('password')
+      username = request.POST.get('usernameRegister')
+      password = request.POST.get('passwordRegister')
       passwordRepeat = request.POST.get('passwordRepeat')
       if password == passwordRepeat:
         User.objects.create_user(username=username, password=password, first_name=first_name, last_name=last_name)

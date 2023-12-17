@@ -2,36 +2,62 @@
 {% block content %}
 
 <section class="login-content">
-
+ 
   <h1>Register</h1>
 
   <form class="login-form" action="/register/" method="POST">
     {% csrf_token %}
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-      <input name="firstname" class="mdl-textfield__input" id="firstname" type="text">
+      <input name="firstname" class="mdl-textfield__input" id="firstname" type="text" 
+      oninput="validateRegisterForm()" onkeydown="disableSpace(event)">
       <label class="mdl-textfield__label" for="firstname">First name</label>
     </div>
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-      <input name="lastname" class="mdl-textfield__input" id="lastname" type="text">
+      <input name="lastname" class="mdl-textfield__input" id="lastname" type="text" 
+      oninput="validateRegisterForm()" onkeydown="disableSpace(event)">
       <label class="mdl-textfield__label" for="lastname">Last name</label>
     </div>
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-      <input name="username" class="mdl-textfield__input" id="username" type="text">
-      <label class="mdl-textfield__label" for="username">Username</label>
+      <input name="usernameRegister" class="mdl-textfield__input" id="usernameRegister" type="text" 
+      oninput="validateRegisterForm()" onkeydown="disableSpace(event)">
+      <label class="mdl-textfield__label" for="usernameRegister">Username</label>
     </div>
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-      <input name="password" class="mdl-textfield__input" id="password" type="password">
-      <label class="mdl-textfield__label" for="password">Password</label>
+      <input name="passwordRegister" class="mdl-textfield__input" id="passwordRegister" type="password" 
+      oninput="validateRegisterForm()" onkeydown="disableSpace(event)">
+      <label class="mdl-textfield__label" for="passwordRegister">Password</label>
     </div>
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-      <input name="passwordRepeat" class="mdl-textfield__input" id="passwordRepeat" type="password">
+      <input name="passwordRepeat" class="mdl-textfield__input" id="passwordRepeat" type="password" 
+      oninput="validateRegisterForm()" onkeydown="disableSpace(event)">
       <label class="mdl-textfield__label" for="passwordRepeat">Repeat password</label>
     </div>
     <div class="login-button-container">
-      <button
-        class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Register</button>
+      <button id="registerButton" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" disabled>Register</button>
     </div>
   </form>
+
+  <script>
+    function validateRegisterForm() {
+      const fn = firstname.value.trim();
+      const ln = lastname.value.trim();
+      const username = usernameRegister.value.trim();
+      const password = passwordRegister.value.trim();
+      const passwordRep = passwordRepeat.value.trim();
+  
+      if (fn && ln && username && password && passwordRep) {
+        registerButton.removeAttribute('disabled');
+      } else {
+        registerButton.setAttribute('disabled', 'true');
+      }
+    }
+
+    function disableSpace(event) {
+      if (event.key === ' ' || event.code === 'Space') {
+        event.preventDefault();
+      }
+    }
+  </script>
 
   {% if noPwMatch %}
 

@@ -9,24 +9,38 @@
     {% csrf_token %}
     <input type="hidden" name="next" value="{{ next }}">
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-      <input name="username" class="mdl-textfield__input" id="username" type="text" oninput="validateForm()">
-      <label class="mdl-textfield__label" for="username">Username</label>
+      <input id="usernameLogin" name="usernameLogin" class="mdl-textfield__input" type="text"
+      oninput="validateForm()" onkeydown="disableSpace(event)">
+      <label class="mdl-textfield__label" for="usernameLogin">Username</label>
     </div>
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-      <input name="password" class="mdl-textfield__input" id="password" type="password" oninput="validateForm()">
-      <label class="mdl-textfield__label" for="password">Password</label>
+      <input id="passwordLogin" name="passwordLogin" class="mdl-textfield__input" type="password"
+      oninput="validateForm()" onkeydown="disableSpace(event)">
+      <label class="mdl-textfield__label" for="passwordLogin">Password</label>
     </div>
     <div class="login-button-container">
-      <button id="loginButton" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" disabled>Login</button>
+      <button id="loginButton"
+        class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+        disabled>Login</button>
     </div>
   </form>
 
   <script>
+
     function validateForm() {
-      if (username.value.trim() !== '' && password.value.trim() !== '') {
+      const username = usernameLogin.value.trim();
+      const password = passwordLogin.value.trim();
+
+      if (username && password) {
         loginButton.removeAttribute('disabled');
       } else {
         loginButton.setAttribute('disabled', 'true');
+      }
+    }
+
+    function disableSpace(event) {
+      if (event.key === ' ' || event.code === 'Space') {
+        event.preventDefault();
       }
     }
   </script>
