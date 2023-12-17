@@ -21,8 +21,11 @@ def index(request):
     serialized_object = serializers.serialize('json', [ new_message, ])
     return JsonResponse(serialized_object[1:-1], safe=False)
   chatMessages = Message.objects.filter(chat__id=chatId)
-  return render(request, 'chat/index.html', {'messages': chatMessages}) 
+  return render(request, 'chat/index.html', {'messages': chatMessages})
 
+
+def selectChatpartner(request):
+  return render(request, 'select_chatpartner/select.html')
 
 def login_view(request):
   if request.GET.get('next') != None:

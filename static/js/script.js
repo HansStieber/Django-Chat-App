@@ -9,6 +9,7 @@ function validateLoginForm() {
   }
 }
 
+
 function validateRegisterForm() {
   const fn = firstname.value.trim();
   const ln = lastname.value.trim();
@@ -23,11 +24,13 @@ function validateRegisterForm() {
   }
 }
 
+
 function disableSpace(event) {
   if (event.key === " " || event.code === "Space") {
     event.preventDefault();
   }
 }
+
 
 async function sendMessage() {
   let fd = new FormData();
@@ -75,7 +78,6 @@ async function sendMessage() {
       `;
 
     messageField.value = null;
-    console.log("success");
   } catch (e) {
     console.error("An error occurred", e);
   }
