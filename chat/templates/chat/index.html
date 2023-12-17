@@ -1,76 +1,10 @@
 {% extends "base.html" %}
 {% block content %}
 
-<script>
-
-  async function sendMessage() {
-    let fd = new FormData();
-    let token = '{{ csrf_token }}';
-    fd.append('textmessage', messageField.value);
-    fd.append('csrfmiddlewaretoken', token)
-
-    let formattedDate = getCurrentDateInRightFormat();
-
-    try {
-      messagesContainer.innerHTML += `
-      <div class="message-container" id="deleteMessage">
-        <div>
-          <span class="author">{{ request.user.first_name }}</span><span class="creation-time">${formattedDate}</span>
-        </div>
-        <div class="message-text alert-text">
-          ${messageField.value}
-        </div>
-      </div>
-      `;
-      
-      messagesContainer.lastElementChild.scrollIntoView({ behavior: 'smooth' }); // Remove the parentheses
-
-      let response = await fetch('/chat/', {
-        method: 'POST',
-        body: fd
-      });
-
-      let json = await response.json();
-      console.log('json is', json)
-
-      deleteMessage.remove();
-      messagesContainer.innerHTML += `
-      <div class="message-container">
-        <div>
-          <span class="author">{{ request.user.first_name }}</span><span class="creation-time">${formattedDate}</span>
-        </div>
-        <div class="message-text">
-          ${messageField.value}
-        </div>
-      </div>
-      `;
-
-  messageField.value = null;
-  console.log('success');
-} catch (e) {
-  console.error('An error occurred', e);
-}
-  }
-
-  function getCurrentDateInRightFormat() {
-    const months = [
-      "Jan.", "Feb.", "Mar.", "Apr.", "May", "Jun.", "Jul.", "Aug.", "Sep.", "Oct.", "Nov.", "Dec."
-    ];
-
-    const currentDate = new Date();
-    const day = currentDate.getDate();
-    const month = months[currentDate.getMonth()];
-    const year = currentDate.getFullYear();
-
-    const formattedDate = `[${month} ${day}, ${year}]`;
-    return formattedDate;
-  }
-
-</script>
-
 <section class="chat-content">
   <div class="chat-container">
     <div class="messages-container" id="messagesContainer">
+      <span class="author" data-username="{{ request.user.first_name }}"></span>
       {% for message in messages %}
       <div class="message-container">
         <div>

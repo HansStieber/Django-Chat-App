@@ -37,28 +37,6 @@
     </div>
   </form>
 
-  <script>
-    function validateRegisterForm() {
-      const fn = firstname.value.trim();
-      const ln = lastname.value.trim();
-      const username = usernameRegister.value.trim();
-      const password = passwordRegister.value.trim();
-      const passwordRep = passwordRepeat.value.trim();
-  
-      if (fn && ln && username && password && passwordRep) {
-        registerButton.removeAttribute('disabled');
-      } else {
-        registerButton.setAttribute('disabled', 'true');
-      }
-    }
-
-    function disableSpace(event) {
-      if (event.key === ' ' || event.code === 'Space') {
-        event.preventDefault();
-      }
-    }
-  </script>
-
   {% if noPwMatch %}
 
   <p class="alert-text">The passwords you entered do not match!</p>
