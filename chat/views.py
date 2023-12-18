@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from .models import Chat, Message
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import JsonResponse
@@ -57,7 +57,20 @@ def user_logout(request):
     logout(request)
     return redirect('/login/')
   
-  
+ 
+@login_required(login_url='/login/') 
 def select_chat(request):
   chats = Chat.objects.all()
   return render(request, 'select_chatpartner/select.html', {'chats': chats})
+
+
+@login_required(login_url='/login/')
+def create_chat(request):
+    creator = request.user
+    partner = get_user_model().objects.get(pk=request.POST.get('partner_id'))  # Beispiel für den Partner
+
+    new_chat = Chat.objects.create(
+        creator=creator,
+        partner=partner
+    )
+    return redirect('chat_index', chatId=new_chat.id)
