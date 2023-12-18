@@ -32,7 +32,8 @@ function disableSpace(event) {
 }
 
 
-async function sendMessage() {
+async function sendMessage(chatId) {
+  
   let fd = new FormData();
   let token = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
   fd.append("textmessage", messageField.value);
@@ -43,7 +44,7 @@ async function sendMessage() {
   let authorSpan = document.querySelector('.author');
   let username = authorSpan.dataset.username;
 
-  try {
+  try { 
     messagesContainer.innerHTML += `
       <div class="message-container" id="deleteMessage">
         <div>
@@ -57,7 +58,7 @@ async function sendMessage() {
 
     messagesContainer.lastElementChild.scrollIntoView({ behavior: "smooth" });
 
-    let response = await fetch("/chat/", {
+    let response = await fetch(`/chat/${chatId}/`, {
       method: "POST",
       body: fd,
     });

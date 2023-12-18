@@ -9,18 +9,18 @@ from django.core import serializers
 # Create your views here.
 @login_required(login_url='/login/')
 def index(request, chatId):
-  myChat = get_object_or_404(Chat, id=chatId)
+  currentChat = get_object_or_404(Chat, id=chatId)
   if request.method == 'POST':
     new_message = Message.objects.create(
       text=request.POST['textmessage'],
-      chat=myChat,
+      chat=currentChat,
       author=request.user,
       receiver=request.user, 
       )
     serialized_object = serializers.serialize('json', [ new_message, ])
     return JsonResponse(serialized_object[1:-1], safe=False)
   chatMessages = Message.objects.filter(chat__id=chatId)
-  return render(request, 'chat/index.html', {'messages': chatMessages})
+  return render(request, 'chat/index.html', {'messages': chatMessages, 'chatId': chatId})
 
 
 def login_view(request):
