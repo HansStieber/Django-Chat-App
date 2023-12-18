@@ -24,7 +24,7 @@ def index(request, chatId):
 
 
 def login_view(request):
- # next = request.GET.get('next') or '/chat/'
+  next = request.GET.get('next') or '/select_chatpartner/'
   if request.method == 'POST':
     user = authenticate(
       username=request.POST.get('usernameLogin'),
@@ -32,10 +32,10 @@ def login_view(request):
       ) 
     if user:
       login(request, user)
-      return redirect('/select_chatpartner/')    #(request.POST.get('next'))
+      return redirect(request.POST.get('next'))
     else:
       return render(request, 'auth/login.html', {'wrongPassword': True})
-  return render(request, 'auth/login.html') #, {'next': next})
+  return render(request, 'auth/login.html', {'next': next})
 
 
 def register_view(request):

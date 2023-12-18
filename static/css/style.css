@@ -20,10 +20,12 @@ main {
   display: flex !important;
   justify-content: center;
   align-items: center;
+  width: 100% !important;
 }
 
 .page-content {
   height: 100%;
+  width: 100%;
 }
 
 form {
@@ -62,6 +64,7 @@ form {
   align-items: center;
   flex-direction: column;
   height: 100%;
+  width: 100%;
 }
 
 .chat-container {
@@ -104,4 +107,10 @@ form {
   font-size: 12px;
   width: 365px;
   word-wrap: break-word;
+}
+
+.create-chat-button {
+  position: absolute !important;
+  right: 50px;
+  bottom: 50px;
 }
