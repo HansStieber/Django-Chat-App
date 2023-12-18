@@ -8,8 +8,7 @@ from django.core import serializers
 
 # Create your views here.
 @login_required(login_url='/login/')
-def index(request):
-  chatId = 4
+def index(request, chatId):
   myChat = get_object_or_404(Chat, id=chatId)
   if request.method == 'POST':
     new_message = Message.objects.create(
@@ -24,25 +23,19 @@ def index(request):
   return render(request, 'chat/index.html', {'messages': chatMessages})
 
 
-def selectChatpartner(request):
-  return render(request, 'select_chatpartner/select.html')
-
 def login_view(request):
-  if request.GET.get('next') != None:
-    next = request.GET.get('next')
-  else:
-    next = '/chat/'
+ # next = request.GET.get('next') or '/chat/'
   if request.method == 'POST':
     user = authenticate(
       username=request.POST.get('usernameLogin'),
       password=request.POST.get('passwordLogin')
-      )
+      ) 
     if user:
       login(request, user)
-      return redirect(request.POST.get('next'))
+      return redirect('/select_chatpartner/')    #(request.POST.get('next'))
     else:
       return render(request, 'auth/login.html', {'wrongPassword': True})
-  return render(request, 'auth/login.html', {'next': next})
+  return render(request, 'auth/login.html') #, {'next': next})
 
 
 def register_view(request):
@@ -63,3 +56,8 @@ def register_view(request):
 def user_logout(request):
     logout(request)
     return redirect('/login/')
+  
+  
+def select_chat(request):
+  chats = Chat.objects.all()
+  return render(request, 'select_chatpartner/select.html', {'chats': chats})
