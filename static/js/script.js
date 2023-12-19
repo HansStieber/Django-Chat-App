@@ -114,15 +114,17 @@ document.addEventListener('DOMContentLoaded', function() {
   var dialog = document.querySelector('dialog');
   var showDialogButton = document.querySelector('#show-dialog');
 
-  if (!dialog.showModal) {
+  if (dialog && !dialog.showModal) {
     dialogPolyfill.registerDialog(dialog);
   }
 
-  showDialogButton.addEventListener('click', function() {
-    dialog.showModal();
-  });
+  if (dialog) {
+    showDialogButton.addEventListener('click', function() {
+      dialog.showModal();
+    });
 
-  dialog.querySelector('.close').addEventListener('click', function() {
-    dialog.close();
-  });
+    dialog.querySelector('.close').addEventListener('click', function() {
+      dialog.close();
+    });
+  }
 });

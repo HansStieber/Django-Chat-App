@@ -2,27 +2,39 @@
 {% block content %}
 
 <section class="login-content">
-  <button class="create-chat-button mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" id="show-dialog" type="button">
+  <button class="create-chat-button mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored"
+    id="show-dialog" type="button">
     <i class="material-icons">add</i>
   </button>
 
   {% for chat in chats %}
 
-  <a href="{% url 'chat_index' chatId=chat.id %}" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+  <a href="{% url 'chat_index' chatId=chat.id %}"
+    class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
     <span class="mdl-list__item-primary-content">
       <i class="material-icons mdl-list__item-icon">person</i>
       {{ chat.id }}
     </span>
   </a>
-  
+
   {% endfor %}
 
   <dialog class="mdl-dialog">
     <h4 class="mdl-dialog__title">Select new chat partner</h4>
     <div class="mdl-dialog__content">
-      <p>
-        Allowing us to collect data will let us get you the information you want faster.
-      </p>
+
+      {% for user in users %}
+
+      <a href="{% url 'chat_index' chatId=chat.id %}"
+        class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+        <span class="mdl-list__item-primary-content">
+          <i class="material-icons mdl-list__item-icon">person</i>
+          {{ user.first_name }}
+        </span>
+      </a>
+
+      {% endfor %}
+
     </div>
     <div class="mdl-dialog__actions">
       <button type="button" class="mdl-button">Create chat</button>

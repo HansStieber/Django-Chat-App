@@ -61,7 +61,8 @@ def user_logout(request):
 @login_required(login_url='/login/') 
 def select_chat(request):
   chats = Chat.objects.all()
-  return render(request, 'select_chatpartner/select.html', {'chats': chats})
+  users = User.objects.all()
+  return render(request, 'select_chatpartner/select.html', {'chats': chats, 'Users': users})
 
 
 @login_required(login_url='/login/')

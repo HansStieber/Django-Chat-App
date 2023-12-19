@@ -25,5 +25,6 @@ urlpatterns = [
   path('login/', login_view, name='login'),
   path('register/', register_view, name='register'),
   path('logout/', user_logout, name='logout'),
-  path('select_chatpartner/', select_chat)
+  path('select_chatpartner/', select_chat, name='select_chat')
+
 ]
