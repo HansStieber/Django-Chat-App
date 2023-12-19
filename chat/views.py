@@ -61,7 +61,8 @@ def user_logout(request):
 @login_required(login_url='/login/')
 def select_chat(request):
     current_user = request.user
-    chats = Chat.objects.filter(creator=current_user) | Chat.objects.filter(partner=current_user)
+    chats = Chat.objects.filter(creator=current_user) | Chat.objects.filter(partners=current_user)
+    chats = chats.distinct()
     users = User.objects.exclude(id=current_user.id)
     return render(request, 'select_chatpartner/select.html', {'chats': chats, 'users': users})
 
@@ -69,17 +70,18 @@ def select_chat(request):
 @login_required(login_url='/login/')
 def create_chat(request):
   if request.method == 'POST':
-      selected_user_ids = request.POST.getlist('selected_users')
-      if not selected_user_ids:
+    selected_partner_ids = request.POST.getlist('selected_partners')
+    
+    if not selected_partner_ids:
         return redirect('select_chat')
 
-      creator = request.user
-      partners = get_user_model().objects.filter(pk__in=selected_user_ids)
+    creator = request.user
+    new_chat = Chat.objects.create(creator=creator)
+    new_chat.partners.add(creator)
 
-      for partner in partners:
-          new_chat = Chat.objects.create(
-            creator=creator,
-            partner=partner
-          )
-      return redirect('chat_index', chatId=new_chat.id)
+    for partner_id in selected_partner_ids:
+        partner = get_user_model().objects.get(pk=partner_id)
+        new_chat.partners.add(partner)
+
+    return redirect('chat_index', chatId=new_chat.id)
   return redirect('select_chat')

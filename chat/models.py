@@ -11,11 +11,9 @@ class Chat(models.Model):
         related_name='created_chats',
         default=None
     )
-    partner = models.ForeignKey(
+    partners = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        related_name='partnered_chats',
-        default=None
+        related_name='chats',
     )
 
 class Message(models.Model):
