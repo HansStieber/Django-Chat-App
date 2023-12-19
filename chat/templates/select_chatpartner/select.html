@@ -36,26 +36,27 @@
   {% endif %}
   {% endfor %}-->
 
-  {% for chat in chats %}
-  <a href="{% url 'chat_index' chatId=chat.id %}"
-    class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-    <span class="mdl-list__item-primary-content">
-      <i class="material-icons mdl-list__item-icon">person</i>
-      Chat with
-      <b>
-        {% for partner in chat.partners.all %}
-          {% if partner != request.user %}
-            {{ partner.username }}
-            {% if not forloop.last %}
-              ,
+  <div class="chat-icon-container">
+    {% for chat in chats %}
+    <a href="{% url 'chat_index' chatId=chat.id %}"
+      class="chat-icon mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+      <span class=" mdl-list__item-primary-content">
+        <i class="material-icons mdl-list__item-icon">person</i>
+        Chat with
+        <b>
+          {% for partner in chat.partners.all reversed %}
+              {% if partner != request.user %}
+                {{ partner.username }}
+              {% if not forloop.last %}
+                ,
+              {% endif %}
             {% endif %}
-          {% endif %}
-        {% endfor %}
-      </b>
-    </span>
-  </a>
-{% endfor %}
-
+          {% endfor %}
+        </b>
+      </span>
+    </a>
+    {% endfor %}
+  </div>
 
   <dialog class="mdl-dialog" id="create-chat-dialog">
 

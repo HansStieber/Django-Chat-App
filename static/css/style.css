@@ -114,3 +114,17 @@ form {
   right: 50px;
   bottom: 50px;
 }
+
+.chat-icon-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.chat-icon {
+  width: 400px !important;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
