@@ -7,44 +7,15 @@
     <i class="material-icons">add</i>
   </button>
 
-  <!--{% for chat in chats %}
-  {% if chat.creator == request.user %}
-  <a href="{% url 'chat_index' chatId=chat.id %}"
-    class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-    <span class="mdl-list__item-primary-content">
-      <i class="material-icons mdl-list__item-icon">person</i>
-      Chat with
-      <b>
-        {% for partner in chat.partners.all %}
-
-        {{ partner.username }}
-        {% if not forloop.last %},
-        {% endif %}
-
-        {% endfor %}
-      </b>
-    </span>
-  </a>
-  {% else %}
-  <a href="{% url 'chat_index' chatId=chat.id %}"
-    class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-    <span class="mdl-list__item-primary-content">
-      <i class="material-icons mdl-list__item-icon">person</i>
-      Chat with <b>{{ chat.creator.username }}</b>
-    </span>
-  </a>
-  {% endif %}
-  {% endfor %}-->
-
   <div class="chat-icon-container">
     {% for chat in chats %}
-    <a href="{% url 'chat_index' chatId=chat.id %}"
+    <a href="{% url 'chatroom' chatId=chat.id %}"
       class="chat-icon mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
       <span class=" mdl-list__item-primary-content">
         <i class="material-icons mdl-list__item-icon">person</i>
         Chat with
         <b>
-          {% for partner in chat.partners.all reversed %}
+          {% for partner in chat.partners.all %}
               {% if partner != request.user %}
                 {{ partner.username }}
               {% if not forloop.last %}

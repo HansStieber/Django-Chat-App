@@ -8,7 +8,7 @@ from django.core import serializers
 
 # Create your views here.
 @login_required(login_url='/login/')
-def index(request, chatId):
+def chatroom(request, chatId):
   currentChat = get_object_or_404(Chat, id=chatId)
   if request.method == 'POST':
     new_message = Message.objects.create(
@@ -20,7 +20,7 @@ def index(request, chatId):
     serialized_object = serializers.serialize('json', [ new_message, ])
     return JsonResponse(serialized_object[1:-1], safe=False)
   chatMessages = Message.objects.filter(chat__id=chatId)
-  return render(request, 'chat/index.html', {'messages': chatMessages, 'chatId': chatId})
+  return render(request, 'chatroom/chatroom.html', {'messages': chatMessages, 'chatId': chatId})
 
 
 def login_view(request):
@@ -39,18 +39,29 @@ def login_view(request):
 
 
 def register_view(request):
-  if request.method == 'POST':
-      first_name = request.POST.get('firstname')
-      last_name = request.POST.get('lastname')
-      username = request.POST.get('usernameRegister')
-      password = request.POST.get('passwordRegister')
-      passwordRepeat = request.POST.get('passwordRepeat')
-      if password == passwordRepeat:
-        User.objects.create_user(username=username, password=password, first_name=first_name, last_name=last_name)
-        return redirect('/login/')
-      else:
-        return render(request, 'register/register.html', {'noPwMatch': True})
-  return render(request, 'register/register.html')
+    user_exists = False
+    no_pw_match = False
+
+    if request.method == 'POST':
+        first_name = request.POST.get('firstname')
+        last_name = request.POST.get('lastname')
+        username = request.POST.get('usernameRegister')
+        password = request.POST.get('passwordRegister')
+        passwordRepeat = request.POST.get('passwordRepeat')
+
+        if User.objects.filter(username=username).exists():
+            user_exists = True
+            return render(request, 'register/register.html', {'userExists': user_exists})
+
+        if password == passwordRepeat:
+            User.objects.create_user(username=username, password=password, first_name=first_name, last_name=last_name)
+            return redirect('/login/')
+        else:
+            no_pw_match = True
+
+    return render(request, 'register/register.html', {'userExists': user_exists, 'noPwMatch': no_pw_match})
+
+
 
 
 def user_logout(request):
@@ -64,7 +75,7 @@ def chat_overview(request):
     chats = Chat.objects.filter(creator=current_user) | Chat.objects.filter(partners=current_user)
     chats = chats.distinct()
     users = User.objects.exclude(id=current_user.id)
-    return render(request, 'chat_overview/chat.html', {'chats': chats, 'users': users})
+    return render(request, 'chat_overview/chat_overview.html', {'chats': chats, 'users': users})
 
 
 @login_required(login_url='/login/')
@@ -83,5 +94,5 @@ def create_chat(request):
         partner = get_user_model().objects.get(pk=partner_id)
         new_chat.partners.add(partner)
 
-    return redirect('chat_index', chatId=new_chat.id)
+    return redirect('chatroom', chatId=new_chat.id)
   return redirect('chat_overview')
