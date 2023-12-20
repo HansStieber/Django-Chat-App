@@ -20,7 +20,7 @@ def chatroom(request, chatId):
     serialized_object = serializers.serialize('json', [ new_message, ])
     return JsonResponse(serialized_object[1:-1], safe=False)
   chatMessages = Message.objects.filter(chat__id=chatId)
-  return render(request, 'chatroom/chatroom.html', {'messages': chatMessages, 'chatId': chatId})
+  return render(request, 'chatroom/chatroom.html', {'messages': chatMessages, 'chatId': chatId, 'currentChat': currentChat})
 
 
 def login_view(request):

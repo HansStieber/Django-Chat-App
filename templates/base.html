@@ -21,10 +21,18 @@
         <!-- Title -->
         <span class="mdl-layout-title">
           {% if request.user.is_authenticated %}
-          Welcome, {{ request.user.first_name }}!
-          {% else %}
-          Welcome, login or register now!
-          {% endif %}
+    {% if currentChat %}
+      Chatroom with &nbsp; {% for partner in currentChat.partners.all %}
+        {% if partner != request.user %}
+          {{ partner.first_name }} &nbsp;
+        {% endif %}
+      {% endfor %}
+    {% else %}
+      Welcome, {{ request.user.first_name }}! Continue your conversations or start a new one.
+    {% endif %}
+  {% else %}
+    Welcome, login or register now!
+  {% endif %}
         </span>
         <!-- Add spacer, to align navigation to the right -->
         <div class="mdl-layout-spacer"></div>
