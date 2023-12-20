@@ -19,7 +19,7 @@
     </div>
   </div>
 
-  <form onsubmit="sendMessage('{{ chatId }}'); return false;" method="post">
+  <form class="message-form" onsubmit="sendMessage('{{ chatId }}'); return false;" method="post">
     {% csrf_token %}
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
       <input name="textmessage" class="mdl-textfield__input" type="text" id="messageField">

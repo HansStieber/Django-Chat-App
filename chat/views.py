@@ -24,7 +24,7 @@ def index(request, chatId):
 
 
 def login_view(request):
-  next = request.GET.get('next') or '/select_chatpartner/'
+  next = request.GET.get('next') or '/chat/'
   if request.method == 'POST':
     user = authenticate(
       username=request.POST.get('usernameLogin'),
@@ -59,12 +59,12 @@ def user_logout(request):
   
  
 @login_required(login_url='/login/')
-def select_chat(request):
+def chat_overview(request):
     current_user = request.user
     chats = Chat.objects.filter(creator=current_user) | Chat.objects.filter(partners=current_user)
     chats = chats.distinct()
     users = User.objects.exclude(id=current_user.id)
-    return render(request, 'select_chatpartner/select.html', {'chats': chats, 'users': users})
+    return render(request, 'chat_overview/chat.html', {'chats': chats, 'users': users})
 
 
 @login_required(login_url='/login/')
@@ -73,7 +73,7 @@ def create_chat(request):
     selected_partner_ids = request.POST.getlist('selected_partners')
     
     if not selected_partner_ids:
-        return redirect('select_chat')
+        return redirect('chat_overview')
 
     creator = request.user
     new_chat = Chat.objects.create(creator=creator)
@@ -84,4 +84,4 @@ def create_chat(request):
         new_chat.partners.add(partner)
 
     return redirect('chat_index', chatId=new_chat.id)
-  return redirect('select_chat')
+  return redirect('chat_overview')
