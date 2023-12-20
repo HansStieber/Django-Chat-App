@@ -16,11 +16,8 @@
         Chat with
         <b>
           {% for partner in chat.partners.all %}
-              {% if partner != request.user %}
-                {{ partner.username }}
-              {% if not forloop.last %}
-                ,
-              {% endif %}
+            {% if partner != request.user %}
+              {{ partner.username }} &nbsp;
             {% endif %}
           {% endfor %}
         </b>
