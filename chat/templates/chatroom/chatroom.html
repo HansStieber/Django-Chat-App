@@ -6,7 +6,9 @@
   <div class="chat-container">
     <div class="messages-container" id="messagesContainer">
       <span class="author" data-username="{{ request.user.first_name }}"></span>
+
       {% for message in messages %}
+      
       <div class="message-container">
         <div>
           <span class="author">{{ message.author.first_name }}</span><span class="creation-time">{{ message.created_at }}</span>
@@ -14,13 +16,17 @@
         <div class="message-text">
           {{ message.text }}
         </div>
-      </div> 
+      </div>
+
       {% endfor %}
+
     </div>
   </div>
 
   <form class="message-form" onsubmit="sendMessage('{{ chatId }}'); return false;" method="post">
+
     {% csrf_token %}
+
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
       <input minlength="1" name="textmessage" class="mdl-textfield__input" type="text" id="messageField">
       <label class="mdl-textfield__label" for="messageField">Your message...</label>
@@ -28,7 +34,9 @@
     <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
       send
     </button>
+
   </form>
+  
 </section>
 
 {% endblock %}

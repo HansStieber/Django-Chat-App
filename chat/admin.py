@@ -2,8 +2,8 @@ from django.contrib import admin
 from .models import Message, Chat
 
 class MessageAdmin(admin.ModelAdmin):
-    fields=('chat', 'text', 'created_at', 'author', 'receiver',)
-    list_display=('text', 'created_at', 'author', 'receiver',)
+    fields=('chat', 'text', 'created_at', 'author',)
+    list_display=('text', 'created_at', 'author',)
     search_fields=('text',)
     
 class ChatAdmin(admin.ModelAdmin):

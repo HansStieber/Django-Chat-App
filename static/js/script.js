@@ -1,12 +1,7 @@
 function validateLoginForm() {
   const username = usernameLogin.value.trim();
   const password = passwordLogin.value.trim();
-
-  if (username && password) {
-    loginButton.removeAttribute("disabled");
-  } else {
-    loginButton.setAttribute("disabled", "true");
-  }
+  loginButton.disabled = !(username && password);
 }
 
 
@@ -16,12 +11,7 @@ function validateRegisterForm() {
   const username = usernameRegister.value.trim();
   const password = passwordRegister.value.trim();
   const passwordRep = passwordRepeat.value.trim();
-
-  if (fn && ln && username && password && passwordRep) {
-    registerButton.removeAttribute("disabled");
-  } else {
-    registerButton.setAttribute("disabled", "true");
-  }
+  registerButton.disabled = !(fn && ln && username && password && passwordRep);
 }
 
 
@@ -33,80 +23,74 @@ function disableSpace(event) {
 
 
 async function sendMessage(chatId) {
-  
-  let fd = new FormData();
-  let token = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
-  fd.append("textmessage", messageField.value);
-  fd.append("csrfmiddlewaretoken", token);
+  const formData = createFormData();
+  const formattedDate = getCurrentDateInRightFormat();
+  const username = getAuthorUsername();
 
-  let formattedDate = getCurrentDateInRightFormat();
-
-  let authorSpan = document.querySelector('.author');
-  let username = authorSpan.dataset.username;
-
-  try { 
-    messagesContainer.innerHTML += `
-      <div class="message-container" id="deleteMessage">
-        <div>
-          <span class="author">${username}</span><span class="creation-time">${formattedDate}</span>
-        </div>
-        <div class="message-text alert-text">
-          ${messageField.value}
-        </div>
-      </div>
-      `;
-
-    messagesContainer.lastElementChild.scrollIntoView({ behavior: "smooth" });
-
-    let response = await fetch(`/chat/${chatId}/`, {
-      method: "POST",
-      body: fd,
-    });
-
-    let json = await response.json();
-    console.log("json is", json);
-
-    deleteMessage.remove();
-    messagesContainer.innerHTML += `
-      <div class="message-container">
-        <div>
-          <span class="author">${username}</span><span class="creation-time">${formattedDate}</span>
-        </div>
-        <div class="message-text">
-          ${messageField.value}
-        </div>
-      </div>
-      `;
-
-    messageField.value = null;
-  } catch (e) {
-    console.error("An error occurred", e);
+  try {
+    displayMessage(username, formattedDate);
+    await sendChatMessage(chatId, formData);
+    confirmMessageSent(username, formattedDate);
+    clearMessageField();
+  } catch (error) {
+    console.error("An error occurred", error);
   }
 }
 
+
+function createFormData() {
+  const fd = new FormData();
+  const token = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+  fd.append("textmessage", messageField.value);
+  fd.append("csrfmiddlewaretoken", token);
+  return fd;
+}
+
+
+function getAuthorUsername() {
+  const authorSpan = document.querySelector('.author');
+  return authorSpan.dataset.username;
+}
+
+
+function displayMessage(username, formattedDate) {
+  messagesContainer.innerHTML += `
+    <div class="message-container">
+      <div>
+        <span class="author">${username}</span><span class="creation-time">${formattedDate}</span>
+      </div>
+      <div id="newMessage" class="message-text alert-text">
+        ${messageField.value}
+      </div>
+    </div>
+  `;
+  messagesContainer.lastElementChild.scrollIntoView({ behavior: "smooth" });
+}
+
+
+async function sendChatMessage(chatId, formData) {
+  const response = await fetch(`/chat/${chatId}/`, {
+    method: "POST",
+    body: formData,
+  });
+}
+
+
+function confirmMessageSent() {
+  newMessage.classList.remove('alert-text');
+}
+
+
+function clearMessageField() {
+  messageField.value = null;
+}
+
+
 function getCurrentDateInRightFormat() {
-  const months = [
-    "Jan.",
-    "Feb.",
-    "Mar.",
-    "Apr.",
-    "May",
-    "Jun.",
-    "Jul.",
-    "Aug.",
-    "Sep.",
-    "Oct.",
-    "Nov.",
-    "Dec.",
-  ];
-
   const currentDate = new Date();
-  const day = currentDate.getDate();
-  const month = months[currentDate.getMonth()];
-  const year = currentDate.getFullYear();
-
-  const formattedDate = `[${month} ${day}, ${year}]`;
-  return formattedDate;
+  const options = { month: 'short', day: 'numeric', year: 'numeric' };
+  const formattedDate = currentDate.toLocaleDateString('en-US', options);
+  return `${formattedDate}`;
 }
 
 

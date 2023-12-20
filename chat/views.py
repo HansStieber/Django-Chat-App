@@ -15,7 +15,6 @@ def chatroom(request, chatId):
       text=request.POST['textmessage'],
       chat=currentChat,
       author=request.user,
-      receiver=request.user, 
       )
     serialized_object = serializers.serialize('json', [ new_message, ])
     return JsonResponse(serialized_object[1:-1], safe=False)

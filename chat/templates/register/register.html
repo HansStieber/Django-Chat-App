@@ -6,46 +6,54 @@
   <h1>Register</h1>
 
   <form class="login-form" action="/register/" method="POST">
+
     {% csrf_token %}
+
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
       <input name="firstname" class="mdl-textfield__input" id="firstname" type="text" 
       pattern=".{2,}" title="Please enter a first name with at least two letters!" oninput="validateRegisterForm()" onkeydown="disableSpace(event)">
       <label class="mdl-textfield__label" for="firstname">First name</label>
     </div>
+
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
       <input name="lastname" class="mdl-textfield__input" id="lastname" type="text" 
       pattern=".{2,}" title="Please enter a last name with at least two letters!" oninput="validateRegisterForm()" onkeydown="disableSpace(event)">
       <label class="mdl-textfield__label" for="lastname">Last name</label>
     </div>
+
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
       <input name="usernameRegister" class="mdl-textfield__input" id="usernameRegister" type="text" 
       pattern=".{2,}" title="Please enter a username with at least two letters!" oninput="validateRegisterForm()" onkeydown="disableSpace(event)">
       <label class="mdl-textfield__label" for="usernameRegister">Username</label>
     </div>
+
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
       <input name="passwordRegister" class="mdl-textfield__input" id="passwordRegister" type="password" 
       pattern=".*\d.*" minlength="5" title="Please enter a password with at least 5 characters including one number!" oninput="validateRegisterForm()" onkeydown="disableSpace(event)">
       <label class="mdl-textfield__label" for="passwordRegister">Password</label>
     </div>
+
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
       <input name="passwordRepeat" class="mdl-textfield__input" id="passwordRepeat" type="password" 
       oninput="validateRegisterForm()" onkeydown="disableSpace(event)">
       <label class="mdl-textfield__label" for="passwordRepeat">Repeat password</label>
     </div>
+
     <div class="login-button-container">
       <button id="registerButton" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" disabled>Register</button>
     </div>
+    
   </form>
 
   {% if noPwMatch %}
 
-  <p class="alert-text">The passwords you entered do not match!</p>
+    <p class="alert-text">The passwords you entered do not match!</p>
 
   {% endif %}
 
   {% if userExists %}
 
-  <p class="alert-text">The username you selected is already in use!</p>
+    <p class="alert-text">The username you selected is already in use!</p>
 
   {% endif %}
 

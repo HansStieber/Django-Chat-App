@@ -6,30 +6,36 @@
   <h1>Login</h1>
 
   <form class="login-form" action="/login/" method="POST">
+
     {% csrf_token %}
+
     <input type="hidden" name="next" value="{{ next }}">
+
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
       <input id="usernameLogin" name="usernameLogin" class="mdl-textfield__input" type="text"
       oninput="validateLoginForm()" onkeydown="disableSpace(event)">
       <label class="mdl-textfield__label" for="usernameLogin">Username</label>
     </div>
+
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
       <input id="passwordLogin" name="passwordLogin" class="mdl-textfield__input" type="password"
       oninput="validateLoginForm()" onkeydown="disableSpace(event)">
       <label class="mdl-textfield__label" for="passwordLogin">Password</label>
     </div>
+
     <div class="login-button-container">
       <button id="loginButton"
         class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
         disabled>Login</button>
     </div>
+    
   </form>
 
   <p>Not a user? Register <a class="register-link" href="/register/">Now</a></p>
 
   {% if wrongPassword %}
 
-  <p class="alert-text">Wrong Username or Password</p>
+    <p class="alert-text">Wrong Username or Password</p>
 
   {% endif %}
 
